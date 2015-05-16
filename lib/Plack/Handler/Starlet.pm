@@ -40,10 +40,13 @@ sub new {
         $max_workers = delete $args{$_}
             if defined $args{$_};
     }
+    my $is_reuseport = delete $args{reuseport}
+        if defined $args{reuseport};
     
     # instantiate and set the variables
     my $self = $klass->SUPER::new(%args);
     $self->{is_multiprocess} = 1;
+    $self->{is_reuseport} = $is_reuseport;
     $self->{max_workers} = $max_workers;
     
     $self;

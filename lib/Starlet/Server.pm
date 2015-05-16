@@ -50,6 +50,7 @@ sub new {
                 ? $args{err_respawn_interval} : undef,
         ),
         is_multiprocess      => Plack::Util::FALSE,
+        is_reuseport         => Plack::Util::FALSE,
         _using_defer_accept  => undef,
     }, $class;
 
@@ -79,6 +80,7 @@ sub setup_listener {
                 LocalAddr => $self->{host},
                 Proto     => 'tcp',
                 ReuseAddr => 1,
+                ReusePort => $self->{is_reuseport},
             ) or die "failed to listen to port $self->{port}:$!";
         $self->{listens}[fileno($sock)] = {
             host => $self->{host},
